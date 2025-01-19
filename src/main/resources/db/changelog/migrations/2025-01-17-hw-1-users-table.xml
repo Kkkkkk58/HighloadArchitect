@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="hw-1-users-table" author="kslacker">
+        <preConditions>
+            <not>
+                <tableExists tableName="users"/>
+            </not>
+        </preConditions>
+        <createTable tableName="users">
+            <column name="id" type="CLOB" remarks="Идентификатор пользователя">
+                <constraints primaryKey="true" primaryKeyName="pk_users" nullable="false"/>
+            </column>
+            <column name="first_name" type="CLOB" remarks="Имя">
+                <constraints nullable="false"/>
+            </column>
+            <column name="second_name" type="CLOB" remarks="Фамилия">
+                <constraints nullable="false"/>
+            </column>
+            <column name="birth_date" type="DATE" remarks="Дата рождения">
+                <constraints nullable="false"/>
+            </column>
+            <column name="biography" type="CLOB" remarks="Дополнительные сведения"/>
+            <column name="city" type="CLOB" remarks="Город"/>
+            <column name="password_hash" type="CLOB" remarks="Пароль">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="timestamp with time zone" defaultValueComputed="now()" remarks="Время создания записи">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="CLOB" defaultValueComputed="current_user" remarks="Пользователь, создавший запись">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="timestamp with time zone" defaultValueComputed="now()" remarks="Время обновления записи">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_by" type="CLOB" defaultValueComputed="current_user" remarks="Пользователь, обновивший запись">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="users"/>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>
