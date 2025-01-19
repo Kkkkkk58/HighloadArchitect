@@ -1,7 +1,6 @@
 package ru.kslacker.highload.dao.entity
 
 import java.time.LocalDate
-import java.time.LocalDateTime
 import java.time.OffsetDateTime
 
 data class UserEntity(

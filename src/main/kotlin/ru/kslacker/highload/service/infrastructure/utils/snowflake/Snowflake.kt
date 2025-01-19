@@ -16,8 +16,8 @@ class Snowflake(
         private const val INSTANCE_ID_BITS = 10
         private const val SEQUENCE_BITS = 12
         private const val MIN_INSTANCE_ID = 0L
-        const val MAX_INSTANCE_ID = (1L shl INSTANCE_ID_BITS) - 1; // 2^10 - 1. (max number in 10 bits)
-        private const val MAX_SEQUENCE = (1L shl SEQUENCE_BITS) - 1; // 2^12 - 1 (max number in 12 bits)
+        const val MAX_INSTANCE_ID = (1L shl INSTANCE_ID_BITS) - 1 // 2^10 - 1. (max number in 10 bits)
+        private const val MAX_SEQUENCE = (1L shl SEQUENCE_BITS) - 1 // 2^12 - 1 (max number in 12 bits)
         private const val DEFAULT_CUSTOM_EPOCH = 1675951793L // 9.02.2023 14:09:53 GMT
     }
 
@@ -42,7 +42,7 @@ class Snowflake(
         // Check that Instant.now() > then last fixed timestamp. In normal situation it's impossible. Indicate that
         // system clock is invalid.
         if (currentTimestamp < lastTimestamp) {
-            throw IllegalStateException("System clock is invalid. Current timestamp in the past.");
+            error("System clock is invalid. Current timestamp in the past.")
         }
 
         // If we generate more than one id per millisecond we also increase sequence by one.
@@ -60,7 +60,7 @@ class Snowflake(
             sequence = 0
         }
 
-        lastTimestamp = currentTimestamp;
+        lastTimestamp = currentTimestamp
 
         /*
          * Performing the following sequential steps to fit Snowlake Id format:

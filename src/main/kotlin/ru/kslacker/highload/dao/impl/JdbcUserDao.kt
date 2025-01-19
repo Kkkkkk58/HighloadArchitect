@@ -8,7 +8,6 @@ import ru.kslacker.highload.dao.UserDao
 import ru.kslacker.highload.dao.entity.UserEntity
 import ru.kslacker.highload.dao.extensions.getLocalDate
 import ru.kslacker.highload.dao.extensions.getOffsetDateTime
-import java.time.ZoneOffset
 
 @Repository
 class JdbcUserDao(
@@ -84,9 +83,5 @@ class JdbcUserDao(
             mapOf("id" to id),
             MAPPER
         ).firstOrNull()
-    }
-
-    override fun findAll(): List<UserEntity> {
-        return jdbcTemplate.query(SELECT, emptyMap<String, Any>(), MAPPER)
     }
 }
