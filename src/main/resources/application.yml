@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: SocialNetwork
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/highload_architect
+    username: postgres
+    password: postgres
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 20
+      connection-timeout: 10000
+      pool-name: pg-pool
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.xml
+
+springdoc:
+  api-docs:
+    enabled: false
+  swagger-ui:
+    url: openapi.yml
+
+auth:
+  token:
+    signing:
+      key: 123456789123456789123456789123456789123456789123456789
