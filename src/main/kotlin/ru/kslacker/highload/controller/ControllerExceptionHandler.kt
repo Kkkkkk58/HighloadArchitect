@@ -1,5 +1,6 @@
 package ru.kslacker.highload.controller
 
+import jakarta.validation.ConstraintViolationException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.MethodArgumentNotValidException
@@ -28,6 +29,18 @@ class ControllerExceptionHandler {
             message = e.message,
             requestId = null,
             code = e.statusCode.value()
+        )
+
+        return ResponseEntity.badRequest()
+            .body(errorMessage)
+    }
+
+    @ExceptionHandler(ConstraintViolationException::class)
+    fun handle(e: ConstraintViolationException): ResponseEntity<ErrorMessage> {
+        val errorMessage = ErrorMessage(
+            message = e.message ?: "",
+            requestId = null,
+            code = HttpStatus.BAD_REQUEST.value()
         )
 
         return ResponseEntity.badRequest()

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import ru.kslacker.highload.controller.mapping.toCommand
 import ru.kslacker.highload.controller.mapping.toDto
@@ -32,5 +33,14 @@ class UserController(
     @GetMapping("/{id}")
     fun getUser(@NotBlank @PathVariable id: String): UserDto {
         return userService.getUserById(id).toDto()
+    }
+
+    @GetMapping("/search")
+    fun search(
+        @NotBlank @RequestParam("first_name") firstNamePrefix: String,
+        @NotBlank @RequestParam("second_name") secondNamePrefix: String
+    ): List<UserDto> {
+        return userService.findByFirstNameAndSecondNamePrefixes(firstNamePrefix, secondNamePrefix)
+            .map { it.toDto() }
     }
 }

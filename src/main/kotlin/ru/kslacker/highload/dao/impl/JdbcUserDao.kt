@@ -43,6 +43,13 @@ class JdbcUserDao(
             where u.id = :id
         """
 
+        private const val SELECT_BY_FIRST_NAME_PREFIX_AND_SECOND_NAME_PREFIX = """
+            $SELECT
+            where u.first_name like :firstNamePrefix
+                and u.second_name like :secondNamePrefix
+            order by u.id
+        """
+
         private val MAPPER = RowMapper { rs, _ ->
             UserEntity(
                 id = rs.getString("id"),
@@ -83,5 +90,19 @@ class JdbcUserDao(
             mapOf("id" to id),
             MAPPER
         ).firstOrNull()
+    }
+
+    override fun findByFirstNamePrefixAndSecondNamePrefix(
+        firstNamePrefix: String,
+        secondNamePrefix: String
+    ): List<UserEntity> {
+        return jdbcTemplate.query(
+            SELECT_BY_FIRST_NAME_PREFIX_AND_SECOND_NAME_PREFIX,
+            mapOf(
+                "firstNamePrefix" to "$firstNamePrefix%",
+                "secondNamePrefix" to "$secondNamePrefix%"
+            ),
+            MAPPER
+        )
     }
 }

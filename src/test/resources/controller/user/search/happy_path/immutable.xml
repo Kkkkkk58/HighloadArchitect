@@ -1,0 +1,5 @@
+<dataset>
+    <users id="1" first_name="Андрей" second_name="Гоголев" birth_date="2003-05-07" biography="hobbyhorsing" city="Saint-Petersburg" password_hash="some_value"/>
+    <users id="2" first_name="Артём" second_name="Грачёв" birth_date="2003-05-07" biography="hobbyhorsing" city="Saint-Petersburg" password_hash="some_value"/>
+    <users id="3" first_name="Александр" second_name="Горюнов" birth_date="2003-05-07" biography="hobbyhorsing" city="Saint-Petersburg" password_hash="some_value"/>
+</dataset>
