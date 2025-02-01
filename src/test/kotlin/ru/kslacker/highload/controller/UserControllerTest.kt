@@ -65,7 +65,7 @@ class UserControllerTest : SocialNetworkIntegrationTest() {
     fun `search - no users matching criteria - ok, return empty list`() {
         httpAssert.assertApiCall(
             request = MockMvcRequestBuilders.get("/user/search?first_name=А&second_name=Го"),
-            responseFile = "controller/user/search/happy_path/response.json",
+            responseFile = "controller/user/search/no_users/response.json",
             status = status().isOk,
             jsonCompareMode = JSONCompareMode.STRICT_ORDER
         )
