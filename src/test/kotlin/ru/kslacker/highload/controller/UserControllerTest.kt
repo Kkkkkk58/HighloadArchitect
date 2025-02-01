@@ -4,6 +4,7 @@ import com.github.springtestdbunit.annotation.DatabaseSetup
 import com.github.springtestdbunit.annotation.ExpectedDatabase
 import com.github.springtestdbunit.assertion.DatabaseAssertionMode
 import org.junit.jupiter.api.Test
+import org.skyscreamer.jsonassert.JSONCompareMode
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import ru.kslacker.highload.SocialNetworkIntegrationTest
@@ -46,6 +47,43 @@ class UserControllerTest : SocialNetworkIntegrationTest() {
         httpAssert.assertApiCall(
             request = MockMvcRequestBuilders.get("/user/unknown-user"),
             status = status().isNotFound
+        )
+    }
+
+    @Test
+    @DatabaseSetup("/controller/user/search/happy_path/immutable.xml")
+    fun `search - happy path - ok, return usets ordered by id`() {
+        httpAssert.assertApiCall(
+            request = MockMvcRequestBuilders.get("/user/search?first_name=А&second_name=Го"),
+            responseFile = "controller/user/search/happy_path/response.json",
+            status = status().isOk,
+            jsonCompareMode = JSONCompareMode.STRICT_ORDER
+        )
+    }
+
+    @Test
+    fun `search - no users matching criteria - ok, return empty list`() {
+        httpAssert.assertApiCall(
+            request = MockMvcRequestBuilders.get("/user/search?first_name=А&second_name=Го"),
+            responseFile = "controller/user/search/happy_path/response.json",
+            status = status().isOk,
+            jsonCompareMode = JSONCompareMode.STRICT_ORDER
+        )
+    }
+
+    @Test
+    fun `search - blank first name prefix - error`() {
+        httpAssert.assertApiCall(
+            request = MockMvcRequestBuilders.get("/user/search?first_name=   &second_name=Го"),
+            status = status().isBadRequest
+        )
+    }
+
+    @Test
+    fun `search - blank second name prefix - error`() {
+        httpAssert.assertApiCall(
+            request = MockMvcRequestBuilders.get("/user/search?first_name=А&second_name=  "),
+            status = status().isBadRequest
         )
     }
 }

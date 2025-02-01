@@ -11,8 +11,7 @@
             </not>
         </preConditions>
         <sql>
-            create index idx_users_second_name_first_name on users(second_name text_pattern_ops, first_name text_pattern_ops)
-                with (online=on);
+            create index idx_users_second_name_first_name on users(second_name text_pattern_ops, first_name text_pattern_ops);
         </sql>
         <rollback>
             <dropIndex tableName="users" indexName="idx_users_second_name_first_name"/>

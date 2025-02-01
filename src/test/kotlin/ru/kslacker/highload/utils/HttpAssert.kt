@@ -18,6 +18,7 @@ class HttpAssert(private val mockMvc: () -> MockMvc) {
         status: ResultMatcher,
         requestFile: String? = null,
         responseFile: String? = null,
+        jsonCompareMode: JSONCompareMode = JSONCompareMode.STRICT
     ): MvcResult {
         requestFile?.let {
             request.contentType(MediaType.APPLICATION_JSON)
@@ -34,7 +35,7 @@ class HttpAssert(private val mockMvc: () -> MockMvc) {
             JSONAssert.assertEquals(
                 getFileContent(it),
                 resultActions.response.getContentAsString(StandardCharsets.UTF_8),
-                JSONCompareMode.STRICT
+                jsonCompareMode
             )
         }
 
