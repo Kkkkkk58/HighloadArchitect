@@ -22,10 +22,14 @@ class DefaultUserService(
     private val passwordEncoder: PasswordEncoder,
     private val clock: Clock
 ): UserService {
-    @Transactional(readOnly = true)
     override fun getUserById(id: String): User {
         val user = userDao.findById(id) ?: throw UserNotFoundException.withUserId(id)
         return user.toDomainModel()
+    }
+
+    override fun findByFirstNameAndSecondNamePrefixes(firstNamePrefix: String, secondNamePrefix: String): List<User> {
+        return userDao.findByFirstNamePrefixAndSecondNamePrefix(firstNamePrefix, secondNamePrefix)
+            .map { it.toDomainModel() }
     }
 
     @Transactional

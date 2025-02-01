@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="hw-2-idx_users_second_name_first_name" author="kslacker">
+        <preConditions>
+            <not>
+                <indexExists tableName="users" indexName="idx_users_second_name_first_name"/>
+            </not>
+        </preConditions>
+        <sql>
+            create index idx_users_second_name_first_name on users(second_name text_pattern_ops, first_name text_pattern_ops)
+                with (online=on);
+        </sql>
+        <rollback>
+            <dropIndex tableName="users" indexName="idx_users_second_name_first_name"/>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>
