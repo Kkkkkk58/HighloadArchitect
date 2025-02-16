@@ -1,0 +1,11 @@
+FROM highload-system AS build
+
+WORKDIR /app
+
+COPY --chown=myuser:myuser . .
+
+USER myuser
+
+RUN ./gradlew clean build -x test --no-daemon && \
+    ls -l /app/build/libs/ && \
+    rm -rf /app/.gradle

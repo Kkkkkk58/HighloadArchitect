@@ -1,0 +1,14 @@
+FROM eclipse-temurin:21-jre-alpine AS run
+
+WORKDIR /app
+
+RUN adduser -D -u 1000 myuser && \
+    chown -R myuser:myuser /app
+
+COPY --from=highload-build --chown=myuser:myuser /app/build/libs/highload-1.0.jar /app/highload.jar
+
+USER myuser
+
+EXPOSE 8080
+
+ENTRYPOINT ["java", "-jar", "/app/highload.jar"]

@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "ru.kslacker"
-version = "0.0.1-SNAPSHOT"
+version = "1.0"
 
 java {
     toolchain {

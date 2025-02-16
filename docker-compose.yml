@@ -1,14 +1,51 @@
 services:
-  bms_db:
-    image: postgres:latest
-    container_name: highload_architect
-    ports:
-      - "5432:5432"
-    restart: always
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=highload_architect
-      - POSTGRES_HOST=5432
+  system:
+    build:
+      context: .
+      dockerfile: Dockerfile.system
+    image: highload-system
+    container_name: highload-system
     volumes:
-      - ./docker_data/bms_db:/var/lib/postgresql/data
+      - build-artifacts:/app/build
+
+  build:
+    build:
+      context: .
+      dockerfile: Dockerfile.build
+    image: highload-build
+    container_name: highload-build
+    volumes:
+      - build-artifacts:/app/build
+    depends_on:
+      - system
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.run
+    container_name: highload-architect
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./build/libs:/app/build/libs
+    environment:
+      - POSTGRES_DB_URL=${POSTGRES_DB_URL}
+      - POSTGRES_DB_USER=${POSTGRES_DB_USER}
+      - POSTGRES_DB_PASSWORD=${POSTGRES_DB_PASSWORD}
+    depends_on:
+      - build
+      - db
+
+  db:
+    image: postgres:16-alpine
+    container_name: postgres-db
+    environment:
+      POSTGRES_USER: ${POSTGRES_DB_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_DB_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB_NAME}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  build-artifacts:
+  postgres_data:
