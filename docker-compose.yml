@@ -1,9 +1,29 @@
 services:
+  system:
+    build:
+      context: .
+      dockerfile: Dockerfile.system
+    image: highload-system
+    container_name: highload-system
+    volumes:
+      - build-artifacts:/app/build
+
+  build:
+    build:
+      context: .
+      dockerfile: Dockerfile.build
+    image: highload-build
+    container_name: highload-build
+    volumes:
+      - build-artifacts:/app/build
+    depends_on:
+      - system
+
   app:
     build:
       context: .
-      dockerfile: Dockerfile
-    container_name: highload_architect
+      dockerfile: Dockerfile.run
+    container_name: highload-architect
     ports:
       - "8080:8080"
     volumes:
@@ -13,6 +33,7 @@ services:
       - POSTGRES_DB_USER=${POSTGRES_DB_USER}
       - POSTGRES_DB_PASSWORD=${POSTGRES_DB_PASSWORD}
     depends_on:
+      - build
       - db
 
   db:
@@ -26,4 +47,5 @@ services:
       - postgres_data:/var/lib/postgresql/data
 
 volumes:
+  build-artifacts:
   postgres_data:

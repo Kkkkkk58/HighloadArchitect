@@ -1,0 +1,9 @@
+FROM eclipse-temurin:21-jdk-alpine AS system
+
+WORKDIR /app
+
+RUN adduser -D -u 1000 myuser && \
+    chown -R myuser:myuser /app
+
+RUN apk add --no-cache bash && \
+    rm -rf /var/cache/apk/*
