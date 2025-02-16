@@ -8,7 +8,7 @@ RUN adduser -D -u 1000 myuser && \
 RUN apk add --no-cache bash && \
     rm -rf /var/cache/apk/*
 
-COPY --chown=myuser:myuser . /app
+COPY --chown=myuser:myuser . .
 
 USER myuser
 
