@@ -4,9 +4,9 @@ spring:
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/highload_architect
-    username: postgres
-    password: postgres
+    url: ${POSTGRES_DB_URL}
+    username: ${POSTGRES_DB_USER}
+    password: ${POSTGRES_DB_PASSWORD}
     hikari:
       minimum-idle: 5
       maximum-pool-size: 20
