@@ -13,6 +13,7 @@ spring:
       connection-timeout: 10000
       pool-name: pg-pool
   liquibase:
+    enabled: ${LIQUIBASE_ENABLED}
     change-log: classpath:db/changelog/db.changelog-master.xml
 
 springdoc:
