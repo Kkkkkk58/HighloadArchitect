@@ -1,0 +1,15 @@
+spring:
+  liquibase:
+    enabled: true
+    change-log: classpath:db/changelog/db.changelog-master.xml
+
+springdoc:
+  api-docs:
+    enabled: false
+  swagger-ui:
+    url: openapi.yml
+
+auth:
+  token:
+    signing:
+      key: 123456789123456789123456789123456789123456789123456789
