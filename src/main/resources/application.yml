@@ -4,15 +4,16 @@ spring:
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/highload_architect
-    username: postgres
-    password: postgres
+    url: ${POSTGRES_DB_URL}
+    username: ${POSTGRES_DB_USER}
+    password: ${POSTGRES_DB_PASSWORD}
     hikari:
       minimum-idle: 5
       maximum-pool-size: 20
       connection-timeout: 10000
       pool-name: pg-pool
   liquibase:
+    enabled: ${LIQUIBASE_ENABLED}
     change-log: classpath:db/changelog/db.changelog-master.xml
 
 springdoc:
